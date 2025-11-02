@@ -19,7 +19,8 @@ Hugo ships with several [Embedded Shortcodes](https://gohugo.io/content-manageme
 {{</* tweet user="GoHugoIO" id="1315233626070503424" */>}}
 ```
 <br>
-{{< tweet user="GoHugoIO" id="1315233626070503424" >}}
+<!-- Disabled due to network issues -->
+<!-- {{< tweet user="GoHugoIO" id="1315233626070503424" >}} -->
 <br>
 
 
