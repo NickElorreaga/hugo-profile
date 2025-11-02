@@ -9,6 +9,12 @@
     - .featured: Featured link object with .name and .link (optional)
     - .RelPermalink: Link to full project page (optional, for content pages)
 */}}
+{{ $isContentPage := .RelPermalink }}
+{{ $displayTitle := .title }}
+{{ if $isContentPage }}
+    {{ $displayTitle = .title | truncate 50 }}
+{{ end }}
+
 <div class="card my-3 h-100" title="{{ .title }}">
     <div class="card-head">
         <img class="card-img-top" src="{{ .image }}" alt="{{ .title }}">
@@ -19,7 +25,7 @@
             <span class="badge badge-secondary">{{ . }}</span>
             {{ end }}
         </div>
-        <h5 class="card-title bg-transparent {{ if not .RelPermalink }}mt-1{{ end }}">{{ if .RelPermalink }}{{ .title | truncate 50 }}{{ else }}{{ .title }}{{ end }}</h5>
+        <h5 class="card-title bg-transparent {{ if not $isContentPage }}mt-1{{ end }}">{{ $displayTitle }}</h5>
         <div class="card-text bg-transparent secondary-font">
             {{ if .content }}
                 {{ .content }}
@@ -28,11 +34,11 @@
             {{ end }}
         </div>
     </div>
-    {{ if or (.links) (.featured) (.RelPermalink) }}
+    {{ if or (.links) (.featured) ($isContentPage) }}
     <div class="card-footer py-3">
         {{ range .links }}
         <span class="m-1 mx-2">
-            <a href="{{ .url }}" {{ if not $.RelPermalink }}target="_blank"{{ end }}>
+            <a href="{{ .url }}" {{ if not $isContentPage }}target="_blank"{{ end }}>
                 <i class="{{ .icon }}"></i>
             </a>
         </span>
@@ -43,7 +49,7 @@
                 {{ .featured.name }}
             </a>
         </span>
-        {{ else if .RelPermalink }}
+        {{ else if $isContentPage }}
         <span class="float-end">
             <a class="btn btn-sm" href="{{ .RelPermalink }}">
                 Know more
