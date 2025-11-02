@@ -1,0 +1,45 @@
+{{/* 
+    Reusable blog post card component
+    Expected context:
+    - .Title or .title: Post title
+    - .Params.image or .image: Post image URL (optional)
+    - .Summary or .summary: Post summary
+    - .RelPermalink or .relPermalink: Link to full post
+    - .Date or .date: Post date
+    - .Site: Site object (for params access)
+    - .disableFeaturedImage: Whether to disable featured image (optional)
+    - .dateFormat: Date format to use (optional)
+*/}}
+{{ $title := .Title | default .title }}
+{{ $image := .Params.image | default .image }}
+{{ $summary := .Summary | default .summary }}
+{{ $relPermalink := .RelPermalink | default .relPermalink }}
+{{ $date := .Date | default .date }}
+{{ $disableFeaturedImage := .disableFeaturedImage | default false }}
+{{ $dateFormat := .dateFormat | default "January 2, 2006" }}
+{{ $readText := "Read" }}
+{{ if .Site }}
+    {{ $readText = .Site.Params.terms.read | default "Read" }}
+{{ end }}
+
+<div class="card h-100">
+    {{ if and (not $disableFeaturedImage) $image }}
+    <div class="card-header">
+        <a href="{{ $relPermalink }}">
+            <img src="{{ $image }}" class="card-img-top" alt="{{ $title }}">
+        </a>
+    </div>
+    {{ end }}
+    <div class="card-body bg-transparent p-3 {{ if not $image }}p-4{{ end }} shadow-sm">
+        <a href="{{ $relPermalink }}" class="primary-font card-title">
+            <h5 class="card-title bg-transparent" title="{{ $title }}">{{ $title | truncate 25 }}</h5>
+        </a>
+        <div class="card-text secondary-font">
+            <p>{{ $summary | truncate 300}}</p>
+        </div>
+    </div>
+    <div class="mt-auto {{ if $image }}card-footer{{ else }}post-footer bg-transparent py-3{{ end }}">
+        <span class="float-start {{ if not $image }}bg-transparent{{ end }}">{{ $date.Format $dateFormat }}</span>
+        <a href="{{ $relPermalink }}" class="float-end btn btn-outline-info btn-sm">{{ $readText }}</a>
+    </div>
+</div>
